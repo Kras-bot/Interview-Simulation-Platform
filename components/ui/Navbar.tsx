@@ -15,7 +15,7 @@ const Navbar = () => {
 
       <div className="navbar-links flex whitespace-nowrap"> {/* gap-30 */}
         <a href="#info">How it works</a>
-        <a href="#pricing">Pricing</a>
+        <a href="/pricing">Pricing</a>
         <a href="#reviews">Reviews</a>
         <a href="#faq">FAQs</a>
       </div>
@@ -36,7 +36,7 @@ const Navbar = () => {
     </div>
 
     {/* Mobile Navbar */}
-    <div className='md:hidden flex-center w-full'>
+    <div className='md:hidden flex-center w-full mt-6'>
       <a href="/home">
       <Image src="/Images/Icons/Exports/logo-icon.svg" alt="ItriQ logo"
          width={121} height={55} className='main-logo'/>
