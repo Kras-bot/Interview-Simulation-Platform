@@ -46,10 +46,13 @@ const Home = () => {
                 Get real-time feedback and analytics to track your growth
                 and identify gaps.
               </div>
-              <Button className='pl-10 w-80 gap-15 rounded-full py-8'>
+              <a href="/dashboard">
+              <Button className='pl-10 w-80 gap-15 rounded-full py-8 cursor-pointer'>
                 <div className='text-base font-bold'>Start Interview Practice</div>
                 <img src="Images/Icons/Exports/CTA-arrow-plain.svg" alt="arrow" />
               </Button>
+              </a>
+
             </div>
           </div> 
         </div>

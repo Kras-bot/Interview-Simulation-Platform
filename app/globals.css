@@ -138,6 +138,12 @@
   @apply gap-15 xl:gap-[clamp(20px,10vw,120px)] lg:gap-[clamp(20px,10vw,120px)]
           text-base md:text-lg lg:text-lg xl:text-lg;
 }
+/* Dashboard */
+@utility option-card{
+  @apply flex flex-row border rounded-sm p-2 text-xl font-semibold 
+  bg-[#fdfdfd] hover:bg-background cursor-pointer select-none;
+}
+
 
 /* Font Imports */
 @font-face {
