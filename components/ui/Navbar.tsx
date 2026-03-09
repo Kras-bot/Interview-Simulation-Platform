@@ -1,8 +1,36 @@
-import React from 'react'
+"use client"
+
 import Image from "next/image"
 import { Button } from './button'
+import { useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 const Navbar = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+  useEffect(() => {
+    const supabase = createClient()
+    let isMounted = true
+
+    supabase.auth.getUser().then(({ data }) => {
+      if (isMounted) {
+        setIsAuthenticated(Boolean(data.user))
+      }
+    })
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(Boolean(session?.user))
+    })
+
+    return () => {
+      isMounted = false
+      authListener.subscription.unsubscribe()
+    }
+  }, [])
+
+  const ctaLabel = isAuthenticated ? "Open App" : "Demo"
+  const ctaHref = isAuthenticated ? "/dashboard" : "/login"
+
   return (
     <>
     {/* Desktop Navbar */}
@@ -22,15 +50,17 @@ const Navbar = () => {
 
       {/* CTA Button */}
       <div className="flex">
-        <Button className='flex gap-0 h-auto rounded-full p-0'>
-          <div className='text-lg pl-3'>
-            Demo
-          </div>
-          <img
-            src="/Images/Icons/Exports/CTA-arrow.svg"
-            alt="arrow"
-            className='h-12 w-12'
-          />
+        <Button asChild className='flex gap-0 h-auto rounded-full p-0'>
+          <a href={ctaHref}>
+            <div className='text-lg pl-3'>
+              {ctaLabel}
+            </div>
+            <img
+              src="/Images/Icons/Exports/CTA-arrow.svg"
+              alt="arrow"
+              className='h-12 w-12'
+            />
+          </a>
         </Button>
       </div>
     </div>

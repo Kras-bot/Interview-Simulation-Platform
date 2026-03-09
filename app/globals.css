@@ -143,6 +143,24 @@
   @apply flex flex-row border rounded-sm p-2 text-xl font-semibold 
   bg-[#fdfdfd] hover:bg-background cursor-pointer select-none;
 }
+/* Auth Pages */
+@utility auth-page-shell{
+  @apply min-h-screen w-full px-4 py-6 md:px-10 md:py-10;
+}
+@utility auth-layout-shell{
+  @apply mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-6xl overflow-hidden rounded-3xl border border-white/40 bg-white;
+  box-shadow: 0 24px 60px rgba(20, 21, 49, 0.12);
+}
+@utility auth-form-panel{
+  @apply flex w-full items-center justify-center px-5 py-10 md:px-10 lg:w-[56%];
+}
+@utility auth-visual-panel{
+  @apply relative hidden items-center justify-center overflow-hidden lg:flex lg:w-[44%];
+  background: var(--foreground);
+}
+@utility auth-rocket{
+  @apply relative z-10 h-auto w-[72%] max-w-[320px];
+}
 
 
 /* Font Imports */

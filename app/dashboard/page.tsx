@@ -1,14 +1,31 @@
-import React from 'react'
-import Navbar from '@/components/ui/Navbar'
 import Sidebar from '@/components/ui/Sidebar'
-import Image from "next/image"
 import { EllipsisVertical, Clock } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ChevronDown } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { ChevronDown } from "lucide-react"
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
+import { signOutUser } from '@/app/auth/actions'
 
 import { Button } from '@/components/ui/button'
 
-const Dashboard = () => {
+const Dashboard = async () => {
+  const supabase = await createClient()
+  const { data } = await supabase.auth.getUser()
+
+  if (!data.user) {
+    redirect('/login')
+  }
+
+  const metadata = data.user.user_metadata ?? {}
+  const username = typeof metadata.username === 'string' ? metadata.username : ''
+  const fullName = typeof metadata.full_name === 'string' ? metadata.full_name : ''
+  const emailPrefix = data.user.email ? data.user.email.split('@')[0] : ''
+
+  const profileName = (username || fullName || emailPrefix || 'User').trim()
+  const profileEmail = data.user.email ?? ''
+  const avatarUrl = typeof metadata.avatar_url === 'string' ? metadata.avatar_url : ''
+  const avatarFallback = profileName.charAt(0).toUpperCase() || 'U'
+
   return (
     <div className='flex h-screen w-full bg-[#FFFFFF]'>
       <div className="sidebar-section w-24">
@@ -19,17 +36,30 @@ const Dashboard = () => {
 
         <div className="header flex items-center justify-between py-5 pl-20 border-b">
           <div className='text-4xl font-medium font-sans text-nowrap'>Mock Interview Sessions</div>
-          <div className='profile-section flex flex-row items-center gap-3 mr-3'>
-            <Avatar className='h-12 w-12'>
-              <AvatarImage src="/Images/avatar-placeholder.jpg" className="object-cover" alt="user" />
-              <AvatarFallback>A</AvatarFallback>
-            </Avatar>
-            <div className='flex flex-col text-center'> 
-              <div className='text-xl font-semibold'>John Doe</div>
-              <div className='text-sm'>John.D@gmail.com</div>
+          <details className='relative mr-3'>
+            <summary className='flex list-none cursor-pointer items-center gap-3 rounded-md px-2 py-1 hover:bg-background [&::-webkit-details-marker]:hidden'>
+              <Avatar className='h-12 w-12'>
+                <AvatarImage src={avatarUrl} className='object-cover' alt={profileName} />
+                <AvatarFallback>{avatarFallback}</AvatarFallback>
+              </Avatar>
+              <div className='flex flex-col text-center'>
+                <div className='text-xl font-semibold'>{profileName}</div>
+                <div className='text-sm'>{profileEmail}</div>
+              </div>
+              <ChevronDown />
+            </summary>
+
+            <div className='absolute right-0 top-[calc(100%+8px)] z-20 min-w-40 rounded-md border bg-white p-2 shadow-md'>
+              <form action={signOutUser}>
+                <button
+                  type='submit'
+                  className='w-full rounded-md px-3 py-2 text-left text-sm hover:bg-background'
+                >
+                  Log out
+                </button>
+              </form>
             </div>
-            <ChevronDown/>
-          </div>
+          </details>
         </div>
 
         <div className="flex flex-1 min-h-0 flex-row main-content my-5">
@@ -39,15 +69,12 @@ const Dashboard = () => {
             <div className='flex justify-between items-center'>
               <div className='flex shrink-0 gap-4 option-section my-5'>
                 <div className="option-card">
-                  <div>🌍</div>
                   <div>English</div>
                 </div>
                 <div className="option-card">
-                  <div>☺️</div>
                   <div>Friendly</div>
                 </div>
                 <div className="option-card">
-                  <div>🎨</div>
                   <div>Design</div>
                 </div>
               </div>

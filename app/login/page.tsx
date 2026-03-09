@@ -1,16 +1,26 @@
 import { LoginForm } from '@/components/login-form'
-import { Card } from '@/components/ui/card'
-import Navbar from '@/components/ui/Navbar'
-import React from 'react'
+import Image from 'next/image'
 
 const Login = () => {
   return (
-    <div className='flex w-full min-h-screen px-80'>
-      <div className='flex justify-center items-center w-full h-screen min-w-200 gap-10'>
-        <LoginForm className='w-1/2 h-1/2' />
-        <Card className='w-1/2 h-full' />
+    <main className='auth-page-shell'>
+      <div className='auth-layout-shell'>
+        <section className='auth-form-panel'>
+          <LoginForm className='w-full max-w-lg' />
+        </section>
+
+        <section className='auth-visual-panel'>
+          <Image
+            src='/Images/Icons/rocket.svg'
+            alt='Rocket illustration'
+            width={320}
+            height={460}
+            priority
+            className='auth-rocket'
+          />
+        </section>
       </div>
-    </div>
+    </main>
 
   )
 }
